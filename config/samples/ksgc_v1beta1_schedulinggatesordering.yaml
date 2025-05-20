@@ -1,0 +1,13 @@
+apiVersion: ksgc.outrigger.sh/v1beta1
+kind: SchedulingGatesOrdering
+metadata:
+  labels:
+    app.kubernetes.io/name: kube-scheduling-gates-coordinator
+    app.kubernetes.io/managed-by: kustomize
+  name: schedulinggatesordering-sample
+spec:
+  schedulingGates:
+    - name: "multiarch.openshift.io/scheduling-gate"
+    - name: "kueue.x-k8s.io/admission"
+    - name: "kueue.x-k8s.io/topology"
+  # TODO(user): Add fields here

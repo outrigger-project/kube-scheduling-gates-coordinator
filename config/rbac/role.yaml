@@ -1,0 +1,32 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: manager-role
+rules:
+- apiGroups:
+  - ksgc.outrigger.sh
+  resources:
+  - schedulinggatesorderings
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ksgc.outrigger.sh
+  resources:
+  - schedulinggatesorderings/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - ksgc.outrigger.sh
+  resources:
+  - schedulinggatesorderings/status
+  verbs:
+  - get
+  - patch
+  - update

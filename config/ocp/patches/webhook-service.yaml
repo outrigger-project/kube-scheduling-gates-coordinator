@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: controller-manager-service
+  namespace: system
+  annotations:
+    service.beta.openshift.io/serving-cert-secret-name: kube-scheduling-gates-coordinator-cert

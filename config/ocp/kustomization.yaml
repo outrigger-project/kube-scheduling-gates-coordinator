@@ -1,0 +1,37 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+resources:
+  - ../default
+
+patchesStrategicMerge:
+  - patches/webhook-service.yaml
+  - patches/crd-inject-ca.yaml
+
+patches:
+  - target:
+      group: "admissionregistration.k8s.io"
+      version: v1
+      kind: MutatingWebhookConfiguration
+      name: mutating-webhook-configuration
+    patch: |-
+      - op: replace
+        path: /webhooks/0/clientConfig/service/name
+        value: controller-manager-service
+      - op: add
+        path: /metadata/annotations
+        value:
+          "service.beta.openshift.io/inject-cabundle": "true"
+      - op: add
+        path: /webhooks/0/namespaceSelector/matchExpressions/-
+        value:
+            key: kubernetes.io/metadata.name
+            operator: NotIn
+            values:
+              - kube-system
+              - kube-scheduling-gates-coordinator-system
+              - openshift-operator-lifecycle-manager
+              - openshift-kube-apiserver
+              - openshift-kube-controller-manager
+              - openshift-kube-scheduler
+              - openshift-kube-scheduler-operator

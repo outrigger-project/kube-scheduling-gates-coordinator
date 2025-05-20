@@ -1,0 +1,20 @@
+resources:
+  - ./service.yaml
+  - ./manifests.yaml
+
+patches:
+  - target:
+      group: "admissionregistration.k8s.io"
+      version: v1
+      kind: MutatingWebhookConfiguration
+      name: mutating-webhook-configuration
+    patch: |-
+      - op: replace
+        path: /webhooks/0/namespaceSelector
+        value:
+            matchExpressions:
+            - key: kubernetes.io/metadata.name
+              operator: NotIn
+              values:
+               - kube-system
+               - kube-scheduling-gates-coordinator-system

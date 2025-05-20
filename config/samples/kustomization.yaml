@@ -1,0 +1,4 @@
+## Append samples of your project ##
+resources:
+- ksgc_v1beta1_schedulinggatesordering.yaml
+# +kubebuilder:scaffold:manifestskustomizesamples
