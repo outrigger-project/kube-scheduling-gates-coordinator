@@ -63,7 +63,6 @@ func (a *PodMutator) Handle(ctx context.Context, req admission.Request) admissio
 	err = a.client.Get(ctx, client.ObjectKey{
 		Name: utils.SchedulingGatesOrderingName,
 	}, &sgo)
-	// TODO: get the SchedulingGatesOrdering object from the cache
 	if err != nil {
 		if errors.IsNotFound(err) {
 			log.V(3).Info("SchedulingGatesOrdering object not found")
@@ -83,7 +82,7 @@ func (a *PodMutator) Handle(ctx context.Context, req admission.Request) admissio
 		a.delayedSchedulingGatedEvent(ctx, pod.DeepCopy())
 	case v1.Update:
 		oldPod := &model.Pod{}
-		err = a.decoder.Decode(req, &oldPod.Pod)
+		err = a.decoder.DecodeRaw(req.OldObject, &oldPod.Pod)
 		if err != nil {
 			return admission.Errored(http.StatusBadRequest, err)
 		}
